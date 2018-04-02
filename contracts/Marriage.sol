@@ -37,7 +37,7 @@ contract Marriage {
      * @param _bride Ethereum Address of the bride
      * @return registry no.
      */
-    function marriage(address _groom, address _bride) public payable returns(uint256) {
+    function wedding(address _groom, address _bride) public payable returns(uint256) {
         require(msg.sender == _groom || msg.sender == _bride);
         /// check whether Groom and bride has already been married or not
         /// check -- only non-married persons voluteer for marriage
