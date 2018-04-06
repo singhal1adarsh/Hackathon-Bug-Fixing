@@ -1,20 +1,24 @@
-# SecureBlocks Mock Test
+# Blockchain Hackathon
+## Round : Bug Fixing
+`Marriage.sol` is contract descibing the process of marriage and divorce. Both the activities will be approved by lawyer.   
 
-`Marriage.sol` contains all the logic of Marriage.   
+Functionality of each method is described in the developer comment mentioned above each function by __@notice__ or __///__.
 
-`wedding` function used for marriage of two individual.   
-
-Contract have certain hints present to provide the right direction to achieve the task.   
-Please perform all the task listed in the contract by __@notice__ or __///__(developer comments).
-
+There are total 10 fixes labelled as `Fix_n` in comment. Understand the requirement of Fix and put the best code to implement.
 
 ## Test Submission Guidelines
 
-Step -1 : Clone the repo    
-Step -2 : Perform the changes locally on your system.   
-Step -3 : Raise a PR to finally submit your result. PR name should be like **NAME_ROLLNO**.    
+Step -1 : Clone this repository to your github account
+Step -2 : Create a new branch with your identity.
+Step -3 : Perform the changes locally.   
+Step -4 : Push your code.   
+Step -5 : Raise a Pull Request for your new code to merge it with base master branch.    
 
 
-**Timing for test is 20 Mins**
+**Timing :  20 Mins**
 
-## Result Analysis Based on
+**Maximum Points : 50**
+
+**Points of each fix is written in the bracket just after the label as `Fix_n(points)`**
+
+
