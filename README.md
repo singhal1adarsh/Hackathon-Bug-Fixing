@@ -8,11 +8,11 @@ There are total 10 fixes labelled as `Fix_n` in comment. Understand the requirem
 
 ## Test Submission Guidelines
 
-Step -1 : Clone this repository to your github account
-Step -2 : Create a new branch with your identity.
-Step -3 : Perform the changes locally.   
-Step -4 : Push your code.   
-Step -5 : Raise a Pull Request for your new code to merge it with base master branch.    
+**Step 1:** Clone this repository to your github account.<br/>
+**Step 2:** Create a new branch with your identity.<br/>
+**Step 3:** Perform the changes locally.<br/>   
+**Step 4:** Push your code.<br/>   
+**Step 5:** Raise a Pull Request for your new code to merge it with base master branch.<br/>    
 
 
 **Timing :  20 Mins**
