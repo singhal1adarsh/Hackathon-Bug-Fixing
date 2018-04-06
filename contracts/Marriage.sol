@@ -7,7 +7,7 @@ contract Marriage {
     uint256 public Fee = 1 ether;
     uint256 public feeCollected;
 
-    enum MarriageStatus { Divorced, Engaged, MarriagePending, DivorcedPending }
+    enum MarriageStatus { Divorced, Married, MarriagePending, DivorcedPending }
 
     struct Couple {
         address groom;
@@ -17,17 +17,19 @@ contract Marriage {
     }
 
     /// @notice Marriage recognized by the registry no i.e uin256
-    /// It is confidential data doesn't seem by everyone. It only seen by the lawyer
-    /// Put restrict the access of the data
+    /// It is confidential data, shouldn't be seen by everyone. 
+    
+    /* Fix_1: Put restrict the access of the data */
     mapping(uint256 => Couple) public coupleData;
-    /// @notice true refers to user get married, False refers to not
+    
+    /// @notice true refers to user get married, False refers to opposite
     mapping(address => bool) public isUserMarried;
 
     event LogJustMarried(address _groom, address _bride, uint256 _registry, uint256 _timestamp);
     event LogDivorced(uint256 _registry, uint256 _timestamp);
 
     function Marriage() public {
-        /* Set the lawyer which publish the this contract */
+        /* Fix_2 :Set the lawyer which publish this contract */
     }
 
     /**
@@ -39,16 +41,19 @@ contract Marriage {
      */
     function wedding(address _groom, address _bride) public payable returns(uint256) {
         require(msg.sender == _groom || msg.sender == _bride);
-        /// check whether Groom and bride has already been married or not
-        /// check -- only non-married persons voluteer for marriage
-        /// check send value should be equal to -> FEE otherwise marriage doesn't happened
+        
+        /* Fix_3: check that Groom & Bride both are unmarried, otherwise throw */
+        
+        /* Fix_4: check that sent Ether value is equal to the FEE required, otherwise throw */
+        
         feeCollected = feeCollected + Fee;
         lastRegistryNo = lastRegistryNo + 1;
         /// Pass the Marriage Status below to Pending
         coupleData[lastRegistryNo] = Couple(_groom, _bride, MarriageStatus(2), now);
         isUserMarried[_groom] = true;
         isUserMarried[_bride] = true;
-        /** Emit event to know the blockchain node that they get successful marriage */
+        
+        /* Fix_5: Emit event related to successful marriage */
         return lastRegistryNo;
     }
 
@@ -56,9 +61,10 @@ contract Marriage {
     /**
      * @dev Use to approve the request of the bride or groom
      * @param _registryNo No. of regsitry provided to identify the marriage status
-     * /// Only be called by the lawyer
      */
      function approvedRequest(uint256 _registryNo) public {
+     /* Fix_6: Write a modifier to check that certain function can only be called by lawyer and associate with this function*/
+     
          if (coupleData[_registryNo].status == MarriageStatus(2)) {
              coupleData[_registryNo].status = MarriageStatus(1);
          } 
@@ -72,18 +78,16 @@ contract Marriage {
      * @param _registry Registry no. of marriage
      */
     function divorced(uint256 _registry) public {
-        /* set the couple status to  Divorced */
-        /** Emit the event to know the blockchain node that they get successful Divorced */
+        /* Fix_7: Asociate right modifier and set the couple status to  Divorced */
+        /* Fix_8: Emit the right event related to successful Divorced */
     }
 
     /// @notice only be called by the lawyer
-    function withdrawlEther() public returns(bool) {
-        // transfer all collected ether to the lawyer
+    function withdrawEther() public returns(bool) {
+        /* Fix_9: Associate the right modifier and write logic to transfer all collected ether to the lawyer and return result*/
     }
 
-    function () {
-        revert();
-    }
+    /* Fix_10: Add the fallback function which should prevent transfer of any accidental ether to the contract*/
 
 
 }
