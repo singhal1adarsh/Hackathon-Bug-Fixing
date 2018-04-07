@@ -20,7 +20,7 @@ contract Marriage {
     /// It is confidential data, shouldn't be seen by everyone. 
     
     /* Fix_1(2): Put restrict the access of the data */
-    mapping(uint256 => Couple) public coupleData;
+    mapping(uint256 => Couple) private coupleData;
     
     /// @notice true refers to user get married, False refers to opposite
     mapping(address => bool) public isUserMarried;
@@ -30,6 +30,7 @@ contract Marriage {
 
     function Marriage() public {
         /* Fix_2(3):Set the lawyer which publish this contract */
+        lawyer = msg.sender;
     }
 
     /**
@@ -43,8 +44,10 @@ contract Marriage {
         require(msg.sender == _groom || msg.sender == _bride);
         
         /* Fix_3(3): check that Groom & Bride both are unmarried, otherwise throw */
+        require(!isUserMarried);
         
         /* Fix_4(3): check that sent Ether value is equal to the FEE required, otherwise throw */
+        require(coupleData.feeCollected == Fee);
         
         feeCollected = feeCollected + Fee;
         lastRegistryNo = lastRegistryNo + 1;
@@ -54,17 +57,21 @@ contract Marriage {
         isUserMarried[_bride] = true;
         
         /* Fix_5(3): Emit event related to successful marriage */
+        emit LogJustMarried(_groom, _bride, lastRegistryNo, now);
         return lastRegistryNo;
     }
 
-
+    modifier islawyer {
+        require(msg.sender == lawyer);
+        _;
+    }
     /**
      * @dev Use to approve the request of the bride or groom
      * @param _registryNo No. of regsitry provided to identify the marriage status
      */
-     function approvedRequest(uint256 _registryNo) public {
+     function approvedRequest(uint256 _registryNo) islawyer public {
      /* Fix_6(5): Write a modifier to check that certain function can only be called by lawyer and associate with this function*/
-     
+        
          if (coupleData[_registryNo].status == MarriageStatus(2)) {
              coupleData[_registryNo].status = MarriageStatus(1);
          } 
@@ -77,17 +84,29 @@ contract Marriage {
      * @dev Function used for divorced of two person
      * @param _registry Registry no. of marriage
      */
-    function divorced(uint256 _registry) public {
+     modifier candivorce {
+        require(coupleData[_registry].status == MarriageStatus(1));
+        require(coupleData[_registry].status == MarriageStatus(3));
+        _;
+    }
+    function divorced(uint256 _registry) candivorce public {
         /* Fix_7(8): Asociate right modifier and set the couple status to  Divorced */
+        coupleData[_registry].status = MarriageStatus(0);
         /* Fix_8(3): Emit the right event related to successful Divorced */
+        emit LogDivorced(_registry, now);
     }
 
     /// @notice only be called by the lawyer
-    function withdrawEther() public returns(bool) {
+    function withdrawEther() public islawyer returns(bool) {
         /* Fix_9(10): Associate the right modifier and write logic to transfer all collected ether to the lawyer and return result*/
+        
+        
     }
 
     /* Fix_10(10): Add the fallback function which should prevent transfer of any accidental ether to the contract*/
-
+    function fallback   {
+        revert();
+    }
+    }
 
 }
